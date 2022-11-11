@@ -12,6 +12,7 @@
 #define GYO 10  // 迷路の行数
 #define RETU 10 // 迷路の列数
 
+ /* kbhit定義 */
  int kbhit(void)
 {
     struct termios oldt, newt;
@@ -137,7 +138,7 @@ int main(void){
         display_meiro();       /* 迷路を表示 */
 
         if(count == goal_count){        /* 床を全て塗りつぶしたかのチェック */
-        printf("全て塗りました！\n");
+        printf("全て塗れました！\n");
         break;
         }
 
