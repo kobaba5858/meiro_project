@@ -12,7 +12,7 @@
 #define GYO 10  // 迷路の行数
 #define RETU 10 // 迷路の列数
 
- /* kbhit定義 */
+ /* kbhitの定義 */
  int kbhit(void)
 {
     struct termios oldt, newt;
