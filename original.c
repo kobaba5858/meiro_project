@@ -68,36 +68,42 @@ void display_meiro(void){
                 printf("人");       //  プレイヤー
             }
             else if(meiro[y][x] == 0)   //  移動可能な床
-                printf("　");           //  全角スペース
+                printf("  ");           //  全角スペース
             else if(meiro[y][x] == 1)   //  壁
-                printf("■");
+                printf("ww");
             else if(meiro[y][x] == 2)   //塗った床
-                printf("ｘ");
+                printf("xx");
         }
         printf("\n");
     }
-    printf("move: ←↑→↓ restart: ESC\n");    //  操作説明
+    printf("↑:a →:d ↓:s ←:a ,restart: ESC\n");    //  操作説明
 }
 
 // 初期状態に戻る
 void return_start(void){
     int x, y;
-        for(y=0; y<GYO; y++)
-        for(x=0; x<RETU; x++)
+    for(y=0; y<GYO; y++){
+        for(x=0; x<RETU; x++){
             if(meiro[y][x] == 2){
                 meiro[y][x] = 0;   // 塗りつぶした床をもとに戻す
             }
+        }
     }
+    px = 1;     /* プレイヤーのx座標 */
+    py = 1;     /* プレイヤーのy座標 */
+}
 
 // 塗りつぶすべき床の数をカウント
 void goal_count_check(void){
     int x, y;
     goal_count = 0;
-    for(y=0; y<GYO; y++)
-        for(x=0; x<RETU; x++)
+    for(y=0; y<GYO; y++){
+        for(x=0; x<RETU; x++){
             if(meiro[y][x] == 0){
                 goal_count++;   // マップ上の0(移動可能場所)をカウント
             }
+        }
+    }
 }
 
 
@@ -111,13 +117,13 @@ void key_input(void){
             break;
         }
     }
-    if(key == 119 && meiro[py-1][px] == 0)          /* wキー */
+    if(key == 'w' && meiro[py-1][px] == 0)          /* wキー */
         py --;  /* 上に移動 */
-    else if(key == 115 && meiro[py+1][px] == 0)     /* sキー */
+    else if(key == 's' && meiro[py+1][px] == 0)     /* sキー */
         py ++;  /* 下に移動 */
-    else if(key == 97 && meiro[py][px-1] == 0)     /* aキー */
+    else if(key == 'a' && meiro[py][px-1] == 0)     /* aキー */
         px --;  /* 左に移動 */
-    else if(key == 100 && meiro[py][px+1]== 0)      /* dキー */
+    else if(key == 'd' && meiro[py][px+1]== 0)      /* dキー */
         px ++;  /* 右に移動 */
     else if(key == 27)                            /* ESCキー */
         return_start();       /* 最初の状態に戻る */
@@ -138,8 +144,8 @@ int main(void){
         display_meiro();       /* 迷路を表示 */
 
         if(count == goal_count){        /* 床を全て塗りつぶしたかのチェック */
-        printf("全て塗れました！\n");
-        break;
+            printf("全て塗れました！\n");
+            break;
         }
 
         key_input();        /* キー入力受付 */
