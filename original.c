@@ -82,6 +82,7 @@ void display_meiro(void){
 // 初期状態に戻る
 void return_start(void){
     int x, y;
+    count = 0; /* 塗りつぶすべき床の数をリセット*/
     for(y=0; y<GYO; y++){
         for(x=0; x<RETU; x++){
             if(meiro[y][x] == 2){
