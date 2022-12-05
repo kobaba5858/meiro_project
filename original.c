@@ -7,7 +7,7 @@
 #include<stdlib.h> // 同上 
 #include<termios.h>
 #include<unistd.h>
-#include<fcntl.h>
+#include<fcntl.h> 
 
 #define GYO 10  // 迷路の行数
 #define RETU 10 // 迷路の列数
@@ -44,13 +44,13 @@ int meiro[GYO][RETU] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
     {1, 1, 1, 1, 1, 0, 1, 0, 0, 1},
+    {1, 0, 0, 0, 0, 1, 1, 0, 0, 1},
     {1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-	{1, 0, 0, 0, 1, 1, 1, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
-	{1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+	  {1, 0, 0, 0, 1, 1, 1, 0, 0, 1},
+	  {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	  {1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
+	  {1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+	  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
 int px, py; // プレイヤーのxy座標
@@ -103,13 +103,33 @@ void goal_count_check(void){
     for(y=0; y<GYO; y++){
         for(x=0; x<RETU; x++){
             if(meiro[y][x] == 0){
-                goal_count++;   // マップ上の0(移動可能場所)をカウント
+                goal_count++;   // 移動可能な床の数をカウントする
             }
         }
     }
 }
 
-
+// 迷路を描く
+void draw_meiro(void){
+    int x, y;
+    for(y=0; y<GYO; y++){
+        for(x=0; x<RETU; x++){
+            if(x == px && y == py){ //  プレイヤーの位置のとき
+                meiro[y][x] = 2;    //  塗りつぶす
+                count++;            //  塗りつぶした数をカウント
+                printf("人");       //  プレイヤー
+            }
+            else if(meiro[y][x] == 0)   //  移動可能な床
+                printf("　");           //  全角スペース
+            else if(meiro[y][x] == 1)   //  壁
+                printf("■");
+            else if(meiro[y][x] == 2)   //塗った床
+                printf("x");
+        }
+        printf("\n");
+    }
+    prinff("move: ←↑→↓ restart: ESC\n");    //  操作説明
+}
 
 //  キー入力
 void key_input(void){
@@ -120,6 +140,7 @@ void key_input(void){
             break;
         }
     }
+
     if(key == 27){
         key = getchar();
         if(key == 91){
@@ -161,8 +182,8 @@ int main(void){
 
 /* ゲームループ */
     while(1){
-        system("clear");      /* コンソール画面をクリア */
-        display_meiro();       /* 迷路を表示 */
+        system("cls");      /* コンソール画面をクリア */
+        draw_meiro();       /* 迷路を表示 */
 
         if(count == goal_count){        /* 床を全て塗りつぶしたかのチェック */
             printf("全て塗れました！\n");
