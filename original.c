@@ -139,20 +139,7 @@ void key_input(void){
         key_input();        /* 再度キー入力受付 */
     }
 }
-    // if(key == 'w' && meiro[py-1][px] == 0)          /* wキー */
-    //     py --;  /* 上に移動 */
-    // else if(key == 's' && meiro[py+1][px] == 0)     /* sキー */
-    //     py ++;  /* 下に移動 */
-    // else if(key == 'a' && meiro[py][px-1] == 0)     /* aキー */
-    //     px --;  /* 左に移動 */
-    // else if(key == 'd' && meiro[py][px+1]== 0)      /* dキー */
-    //      px ++;  /* 右に移動 */
-    // else if(key == 27)                            /* ESCキー */
-    //     return_start();       /* 最初の状態に戻る */
-    // else                    /* 上記以外のキーの場合 */
-    //     key_input();        /* 再度キー入力受付 */
-
-
+   
 int main(void){
     px = 1;     /* プレイヤーのx座標 */
     py = 1;     /* プレイヤーのy座標 */
