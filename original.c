@@ -44,13 +44,13 @@ int meiro[GYO][RETU] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
     {1, 1, 1, 1, 1, 0, 1, 0, 0, 1},
-    {1, 0, 0, 0, 0, 1, 1, 0, 0, 1},
     {1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-	  {1, 0, 0, 0, 1, 1, 1, 0, 0, 1},
-	  {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	  {1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
-	  {1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-	  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    {1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+	{1, 0, 0, 0, 1, 1, 1, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
+	{1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
 int px, py; // プレイヤーのxy座標
@@ -76,7 +76,7 @@ void display_meiro(void){
         }
         printf("\n");
     }
-    printf("cmd: ↑↓←→ ,restart: ESC\n");    //  操作説明
+    printf("cmd: ↑↓←→ ,restart: space\n");    //  操作説明
     printf("塗りつぶすべき床の数：%d\n", goal_count);  // 塗りつぶすべき床の数を表示
     printf("現在の塗りつぶした床の数：%d\n", count);  // 現在の塗りつぶした床の数を表示させる
 }
@@ -109,27 +109,6 @@ void goal_count_check(void){
     }
 }
 
-// 迷路を描く
-void draw_meiro(void){
-    int x, y;
-    for(y=0; y<GYO; y++){
-        for(x=0; x<RETU; x++){
-            if(x == px && y == py){ //  プレイヤーの位置のとき
-                meiro[y][x] = 2;    //  塗りつぶす
-                count++;            //  塗りつぶした数をカウント
-                printf("人");       //  プレイヤー
-            }
-            else if(meiro[y][x] == 0)   //  移動可能な床
-                printf("　");           //  全角スペース
-            else if(meiro[y][x] == 1)   //  壁
-                printf("■");
-            else if(meiro[y][x] == 2)   //塗った床
-                printf("x");
-        }
-        printf("\n");
-    }
-    prinff("move: ←↑→↓ restart: ESC\n");    //  操作説明
-}
 
 //  キー入力
 void key_input(void){
@@ -141,24 +120,25 @@ void key_input(void){
         }
     }
 
-    if(key == 27){
-        key = getchar();
-        if(key == 91){
+    if(key == 32){      /* spaceキー */
+        return_start(); /* 最初の状態に戻る */
+    }else if (key == 27){
             key = getchar();
-            if(key == 65 && meiro[py-1][px] == 0)          /* ↑キー */
-                py --;  /* 上に移動 */
-            else if(key == 66 && meiro[py+1][px] == 0)     /* ↓キー */
-                py ++;  /* 下に移動 */
-            else if(key == 67 && meiro[py][px+1] == 0)     /* →キー */
-                px ++;  /* 右に移動 */
-            else if(key == 68 && meiro[py][px-1]== 0)      /* ←キー */
-                px --;  /* 左に移動 */
-            else if(key == 27)                            /* ESCキー */
-                return_start();       /* 最初の状態に戻る */
-            else                    /* 上記以外のキーの場合 */
-                key_input();        /* 再度キー入力受付 */
-        }
+                if(key == 91){
+                    key = getchar();
+                    if(key == 65 && meiro[py-1][px] == 0)          /* ↑キー */
+                        py --;  /* 上に移動 */
+                    else if(key == 66 && meiro[py+1][px] == 0)     /* ↓キー */
+                        py ++;  /* 下に移動 */
+                    else if(key == 67 && meiro[py][px+1] == 0)     /* →キー */
+                        px ++;  /* 右に移動 */
+                    else if(key == 68 && meiro[py][px-1]== 0)      /* ←キー */
+                        px --;  /* 左に移動 */
+                }
+    else                    /* 上記以外のキーの場合 */
+        key_input();        /* 再度キー入力受付 */
     }
+}
     // if(key == 'w' && meiro[py-1][px] == 0)          /* wキー */
     //     py --;  /* 上に移動 */
     // else if(key == 's' && meiro[py+1][px] == 0)     /* sキー */
@@ -171,7 +151,7 @@ void key_input(void){
     //     return_start();       /* 最初の状態に戻る */
     // else                    /* 上記以外のキーの場合 */
     //     key_input();        /* 再度キー入力受付 */
-}
+
 
 int main(void){
     px = 1;     /* プレイヤーのx座標 */
@@ -182,8 +162,8 @@ int main(void){
 
 /* ゲームループ */
     while(1){
-        system("cls");      /* コンソール画面をクリア */
-        draw_meiro();       /* 迷路を表示 */
+        system("clear");      /* コンソール画面をクリア */
+        display_meiro();       /* 迷路を表示 */
 
         if(count == goal_count){        /* 床を全て塗りつぶしたかのチェック */
             printf("全て塗れました！\n");
