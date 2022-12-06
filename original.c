@@ -7,7 +7,7 @@
 #include<stdlib.h> // 同上 
 #include<termios.h>
 #include<unistd.h>
-#include<fcntl.h>
+#include<fcntl.h> 
 
 #define GYO 10  // 迷路の行数
 #define RETU 10 // 迷路の列数
@@ -76,13 +76,17 @@ void display_meiro(void){
         }
         printf("\n");
     }
-    printf("↑:a →:d ↓:s ←:a ,restart: ESC\n");    //  操作説明
+    printf("cmd: ↑↓←→ ,restart: space\n");    //  操作説明
+    printf("塗りつぶすべき床の数：%d\n", goal_count);  // 塗りつぶすべき床の数を表示
+    printf("現在の塗りつぶした床の数：%d\n", count);  // 現在の塗りつぶした床の数を表示させる
 }
 
 // 初期状態に戻る
 void return_start(void){
     int x, y;
     count = 0; /* 塗りつぶすべき床の数をリセット*/
+    px = 1;     /* プレイヤーのx座標 */
+    py = 1;     /* プレイヤーのy座標 */
     for(y=0; y<GYO; y++){
         for(x=0; x<RETU; x++){
             if(meiro[y][x] == 2){
@@ -90,8 +94,6 @@ void return_start(void){
             }
         }
     }
-    px = 1;     /* プレイヤーのx座標 */
-    py = 1;     /* プレイヤーのy座標 */
 }
 
 // 塗りつぶすべき床の数をカウント
@@ -101,12 +103,11 @@ void goal_count_check(void){
     for(y=0; y<GYO; y++){
         for(x=0; x<RETU; x++){
             if(meiro[y][x] == 0){
-                goal_count++;   // マップ上の0(移動可能場所)をカウント
+                goal_count++;   // 移動可能な床の数をカウントする
             }
         }
     }
 }
-
 
 
 //  キー入力
@@ -118,19 +119,39 @@ void key_input(void){
             break;
         }
     }
-    if(key == 'w' && meiro[py-1][px] == 0)          /* wキー */
-        py --;  /* 上に移動 */
-    else if(key == 's' && meiro[py+1][px] == 0)     /* sキー */
-        py ++;  /* 下に移動 */
-    else if(key == 'a' && meiro[py][px-1] == 0)     /* aキー */
-        px --;  /* 左に移動 */
-    else if(key == 'd' && meiro[py][px+1]== 0)      /* dキー */
-        px ++;  /* 右に移動 */
-    else if(key == 27)                            /* ESCキー */
-        return_start();       /* 最初の状態に戻る */
+
+    if(key == 32){      /* spaceキー */
+        return_start(); /* 最初の状態に戻る */
+    }else if (key == 27){
+            key = getchar();
+                if(key == 91){
+                    key = getchar();
+                    if(key == 65 && meiro[py-1][px] == 0)          /* ↑キー */
+                        py --;  /* 上に移動 */
+                    else if(key == 66 && meiro[py+1][px] == 0)     /* ↓キー */
+                        py ++;  /* 下に移動 */
+                    else if(key == 67 && meiro[py][px+1] == 0)     /* →キー */
+                        px ++;  /* 右に移動 */
+                    else if(key == 68 && meiro[py][px-1]== 0)      /* ←キー */
+                        px --;  /* 左に移動 */
+                }
     else                    /* 上記以外のキーの場合 */
         key_input();        /* 再度キー入力受付 */
+    }
 }
+    // if(key == 'w' && meiro[py-1][px] == 0)          /* wキー */
+    //     py --;  /* 上に移動 */
+    // else if(key == 's' && meiro[py+1][px] == 0)     /* sキー */
+    //     py ++;  /* 下に移動 */
+    // else if(key == 'a' && meiro[py][px-1] == 0)     /* aキー */
+    //     px --;  /* 左に移動 */
+    // else if(key == 'd' && meiro[py][px+1]== 0)      /* dキー */
+    //      px ++;  /* 右に移動 */
+    // else if(key == 27)                            /* ESCキー */
+    //     return_start();       /* 最初の状態に戻る */
+    // else                    /* 上記以外のキーの場合 */
+    //     key_input();        /* 再度キー入力受付 */
+
 
 int main(void){
     px = 1;     /* プレイヤーのx座標 */
