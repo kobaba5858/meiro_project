@@ -76,7 +76,7 @@ void display_meiro(void){
         }
         printf("\n");
     }
-    printf("cmd: ↑↓←→ ,restart: space\n");    //  操作説明
+    printf("move: ↑↓←→ ,restart: space\n");    //  操作説明
     printf("塗りつぶすべき床の数：%d\n", goal_count);  // 塗りつぶすべき床の数を表示
     printf("現在の塗りつぶした床の数：%d\n", count);  // 現在の塗りつぶした床の数を表示させる
 }
