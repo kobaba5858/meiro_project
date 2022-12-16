@@ -3,8 +3,8 @@
     
 */
 
-#include<stdio.h>  // 何の関数のためのインクルードか表示しておく(自分のため)
-#include<stdlib.h> // 同上 
+#include<stdio.h>  
+#include<stdlib.h> 
 #include<termios.h>
 #include<unistd.h>
 #include<fcntl.h> 
@@ -68,7 +68,7 @@ void display_meiro(void){
                 printf("人");       //  プレイヤー
             }
             else if(meiro[y][x] == 0)   //  移動可能な床
-                printf("  ");           //  全角スペース
+                printf("  ");           //  半角スペース2つ
             else if(meiro[y][x] == 1)   //  壁
                 printf("ww");
             else if(meiro[y][x] == 2)   //塗った床
@@ -76,7 +76,7 @@ void display_meiro(void){
         }
         printf("\n");
     }
-    printf("move: ↑↓←→ ,restart: space\n");    //  操作説明
+    printf("move: ↑ ↓ ← → , restart: space\n");    //  操作説明
     printf("塗りつぶすべき床の数：%d\n", goal_count);  // 塗りつぶすべき床の数を表示
     printf("現在の塗りつぶした床の数：%d\n", count);  // 現在の塗りつぶした床の数を表示させる
 }
