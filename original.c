@@ -80,6 +80,8 @@ int file_input(void){
     }
     
     fclose(map);
+
+    return 0;
 }
 // マップ表示
 void display_meiro(void){
