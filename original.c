@@ -39,6 +39,7 @@
 	return 0;
 } 
 
+/*
 // 迷路マップデータ
 int meiro[GYO][RETU] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -52,11 +53,34 @@ int meiro[GYO][RETU] = {
 	{1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
+*/
 
 int px, py; // プレイヤーのxy座標
 int goal_count; // 塗りつぶすべき床の数
 int count;  //  塗りつぶした床の数
+int meiro[GYO][RETU];
 
+//  マップファイルの読み込み
+int file_input(void){
+    int x, y;
+
+    FILE *map;
+
+    map = fopen("map.txt", "r");
+
+    if(map == NULL){
+        printf("ファイルを開けませんでした\n");
+        return 1;
+    }
+
+    for(y = 0; y < GYO; y++){
+        for(x = 0 ; x < RETU; x++){
+            fscanf(map, "%d", &meiro[y][x]);
+        }
+    }
+    
+    fclose(map);
+}
 // マップ表示
 void display_meiro(void){
     int x, y;
@@ -145,6 +169,7 @@ int main(void){
     py = 1;     /* プレイヤーのy座標 */
     count = 0;  /* 塗りつぶした床の数 */
 
+    file_input();   /* マップファイルの読み込み */
     goal_count_check();     /* 塗りつぶすべき床の数をカウントする */
 
 /* ゲームループ */
