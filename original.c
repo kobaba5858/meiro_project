@@ -1,5 +1,5 @@
 /*
-    迷路ゲーム
+    一筆書きの迷路
     
 */
 
@@ -66,7 +66,7 @@ int file_input(void){
 
     FILE *map;
 
-    map = fopen("map.txt", "r");
+    map = fopen("stage-1.mymap", "r");
 
     if(map == NULL){
         printf("ファイルを開けませんでした\n");
@@ -171,13 +171,13 @@ int main(void){
     py = 1;     /* プレイヤーのy座標 */
     count = 0;  /* 塗りつぶした床の数 */
 
-    file_input();   /* マップファイルの読み込み */
+    file_input();           /* マップファイルの読み込み */
     goal_count_check();     /* 塗りつぶすべき床の数をカウントする */
 
 /* ゲームループ */
     while(1){
-        system("clear");      /* コンソール画面をクリア */
-        display_meiro();       /* 迷路を表示 */
+        system("clear");        /* コンソール画面をクリア */
+        display_meiro();        /* 迷路を表示 */
 
         if(count == goal_count){        /* 床を全て塗りつぶしたかのチェック */
             printf("全て塗れました！\n");
