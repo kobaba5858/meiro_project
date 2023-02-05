@@ -1,10 +1,10 @@
 /*
     一筆書きの迷路
-    
 */
 
 #include<stdio.h>  
 #include<stdlib.h> 
+#include<dirent.h>
 #include<termios.h>
 #include<unistd.h>
 #include<fcntl.h> 
@@ -60,13 +60,56 @@ int goal_count; // 塗りつぶすべき床の数
 int count;  //  塗りつぶした床の数
 int meiro[GYO][RETU];
 
+//  マップファイルの選択
+void map_select(void){
+    int num;
+    int x, y;
+    FILE *map;
+    DIR *dir;
+    struct dirent *dp;
+    char path[64] = "./map_data";
+
+    dir = opendir(path);
+
+    for(dp = readdir(dir); dp != NULL; dp = readdir(dir)){
+        if(dp->d_name[0] != '.'){
+            printf("%s\n", dp->d_name);
+        }
+    }
+
+        closedir(dir);
+
+        printf("\n遊ぶマップを入力し、Enterを押してください。\n");
+        scanf("%d", &num);
+        printf("選んだマップは: %d です。\n", num);
+
+    switch(num){
+        case 1:
+
+        map = fopen("./map_data/1.mymap", "r");
+
+        if(map == NULL){
+            printf("ファイルを開けませんでした\n");
+        }
+
+        for(y = 0; y < GYO; y++){
+            for(x = 0 ; x < RETU; x++){
+                fscanf(map, "%d", &meiro[y][x]);
+            }
+        }
+        
+        fclose(map);
+    }
+}
+
 //  マップファイルの読み込み
+/*
 int file_input(void){
     int x, y;
 
     FILE *map;
 
-    map = fopen("stage-1.mymap", "r");
+    map = fopen("1.mymap", "r");
 
     if(map == NULL){
         printf("ファイルを開けませんでした\n");
@@ -83,6 +126,8 @@ int file_input(void){
 
     return 0;
 }
+*/
+
 // マップ表示
 void display_meiro(void){
     int x, y;
@@ -171,7 +216,8 @@ int main(void){
     py = 1;     /* プレイヤーのy座標 */
     count = 0;  /* 塗りつぶした床の数 */
 
-    file_input();           /* マップファイルの読み込み */
+    map_select();           /*  マップファイルの選択    */
+    //file_input();           /* マップファイルの読み込み */
     goal_count_check();     /* 塗りつぶすべき床の数をカウントする */
 
 /* ゲームループ */
