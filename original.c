@@ -79,26 +79,41 @@ void map_select(void){
 
         closedir(dir);
 
-        printf("\n遊ぶマップを入力し、Enterを押してください。\n");
+        printf("\n遊ぶマップの数字を入力し、Enterを押してください。\n");
         scanf("%d", &num);
         printf("選んだマップは: %d です。\n", num);
 
     switch(num){
         case 1:
-
-        map = fopen("./map_data/1.mymap", "r");
-
-        if(map == NULL){
-            printf("ファイルを開けませんでした\n");
-        }
-
-        for(y = 0; y < GYO; y++){
-            for(x = 0 ; x < RETU; x++){
-                fscanf(map, "%d", &meiro[y][x]);
+            map = fopen("./map_data/1.mymap", "r");
+            if(map == NULL){
+                printf("ファイルを開けませんでした\n");
             }
-        }
+
+            for(y = 0; y < GYO; y++){
+                for(x = 0 ; x < RETU; x++){
+                    fscanf(map, "%d", &meiro[y][x]);
+                }
+            }
+            fclose(map);
+            break;
+
+        case 2:
+            map = fopen("./map_data/2.mymap", "r");
+            if(map == NULL){
+                printf("ファイルを開けませんでした\n");
+            }
+
+            for(y = 0; y < GYO; y++){
+                for(x = 0 ; x < RETU; x++){
+                    fscanf(map, "%d", &meiro[y][x]);
+                }
+            }
+            fclose(map);
+            break;
         
-        fclose(map);
+        default:
+            printf("入力が正しくありません。処理を中止します。\n");
     }
 }
 
@@ -147,7 +162,7 @@ void display_meiro(void){
         }
         printf("\n");
     }
-    printf("move: ↑ ↓ ← → , restart: space\n");    //  操作説明
+    printf("move: ↑ ↓ ← →    restart: space\n");    //  操作説明
     printf("塗りつぶすべき床の数：%d\n", goal_count);  // 塗りつぶすべき床の数を表示
     printf("現在の塗りつぶした床の数：%d\n", count);  // 現在の塗りつぶした床の数を表示させる
 }
