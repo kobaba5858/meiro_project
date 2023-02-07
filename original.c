@@ -12,6 +12,7 @@
 #define GYO 10  // 迷路の行数
 #define RETU 10 // 迷路の列数
 
+#define tile_max 45
  /* kbhitの定義 */
  int kbhit(void)
 {
@@ -150,15 +151,14 @@ void display_meiro(void){
         for(x=0; x<RETU; x++){
             if(x == px && y == py){ //  プレイヤーの位置のとき
                 meiro[y][x] = 2;    //  塗りつぶす
-                count++;            //  塗りつぶした数をカウント
                 printf("人");       //  プレイヤー
-            }
-            else if(meiro[y][x] == 0)   //  移動可能な床
+            }else if(meiro[y][x] == 0){   //  移動可能な床
                 printf("  ");           //  半角スペース2つ
-            else if(meiro[y][x] == 1)   //  壁
+            }else if(meiro[y][x] == 1){   //  壁
                 printf("ww");
-            else if(meiro[y][x] == 2)   //塗った床
+            }else if(meiro[y][x] == 2){   //塗った床
                 printf("xx");
+            }
         }
         printf("\n");
     }
@@ -167,10 +167,24 @@ void display_meiro(void){
     printf("現在の塗りつぶした床の数：%d\n", count);  // 現在の塗りつぶした床の数を表示させる
 }
 
+// 塗りつぶすべき床の数をカウント
+void goal_count_check(void){
+    // int x, y;
+    // goal_count = 0;
+    // for(y=0; y<GYO; y++){
+        // for(x=0; x<RETU; x++){
+            // if(meiro[y][x] == 0){
+                // goal_count++;   // 移動可能な床の数をカウントする
+            // }
+        // }
+    // }
+
+    goal_count = tile_max;
+}
 // 初期状態に戻る
 void return_start(void){
     int x, y;
-    count = 0; /* 塗りつぶすべき床の数をリセット*/
+    count = 1; /* 塗りつぶすべき床の数をリセット*/
     px = 1;     /* プレイヤーのx座標 */
     py = 1;     /* プレイヤーのy座標 */
     for(y=0; y<GYO; y++){
@@ -182,18 +196,6 @@ void return_start(void){
     }
 }
 
-// 塗りつぶすべき床の数をカウント
-void goal_count_check(void){
-    int x, y;
-    goal_count = 0;
-    for(y=0; y<GYO; y++){
-        for(x=0; x<RETU; x++){
-            if(meiro[y][x] == 0){
-                goal_count++;   // 移動可能な床の数をカウントする
-            }
-        }
-    }
-}
 
 
 //  キー入力
@@ -209,18 +211,23 @@ void key_input(void){
     if(key == 32){      /* spaceキー */
         return_start(); /* 最初の状態に戻る */
     }else if (key == 27){
+        key = getchar();
+        if(key == 91){
             key = getchar();
-                if(key == 91){
-                    key = getchar();
-                    if(key == 65 && meiro[py-1][px] == 0)          /* ↑キー */
-                        py --;  /* 上に移動 */
-                    else if(key == 66 && meiro[py+1][px] == 0)     /* ↓キー */
-                        py ++;  /* 下に移動 */
-                    else if(key == 67 && meiro[py][px+1] == 0)     /* →キー */
-                        px ++;  /* 右に移動 */
-                    else if(key == 68 && meiro[py][px-1]== 0)      /* ←キー */
-                        px --;  /* 左に移動 */
-                }
+            if(key == 65 && meiro[py-1][px] == 0){          /* ↑キー */
+                py --;  /* 上に移動 */
+                count ++;
+            }else if(key == 66 && meiro[py+1][px] == 0){     /* ↓キー */
+                py ++;  /* 下に移動 */
+                count ++;
+            }else if(key == 67 && meiro[py][px+1] == 0){     /* →キー */
+                px ++;  /* 右に移動 */
+                count ++;
+            }else if(key == 68 && meiro[py][px-1]== 0){      /* ←キー */
+                px --;  /* 左に移動 */
+                count ++;
+            }
+        }
     else                    /* 上記以外のキーの場合 */
         key_input();        /* 再度キー入力受付 */
     }
@@ -229,7 +236,7 @@ void key_input(void){
 int main(void){
     px = 1;     /* プレイヤーのx座標 */
     py = 1;     /* プレイヤーのy座標 */
-    count = 0;  /* 塗りつぶした床の数 */
+    count = 1;  /* 塗りつぶした床の数 */
 
     map_select();           /*  マップファイルの選択    */
     //file_input();           /* マップファイルの読み込み */
